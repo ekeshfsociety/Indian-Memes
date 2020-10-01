@@ -1,3 +1,6 @@
+import 'dart:async';
+// import 'dart:html';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -7,15 +10,25 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+AudioCache cache = AudioCache(); // you have this
+AudioPlayer player; // create this
 
+void playFile(sound) async {
+  player = await cache.play(sound);
+}
+
+void stopFile(sound) {
+  player?.stop();
+  playFile(sound);
+  print("i am going to play function now");
+}
+
+class MyApp extends StatelessWidget {
   FlatButton memes(image, sound) {
     return FlatButton(
       padding: EdgeInsets.all(0.0),
       onPressed: () {
-        final player = AudioCache();
-        player.play(sound);
+        stopFile(sound);
       },
       child: Image(
         image: AssetImage(image),
